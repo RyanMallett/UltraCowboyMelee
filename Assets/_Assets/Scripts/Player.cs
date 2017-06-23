@@ -26,5 +26,7 @@ public class Player : MonoBehaviour {
 
         cam.gameObject.transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X"));
         cam.gameObject.transform.Rotate(transform.right * -Input.GetAxis("Mouse Y"));
+
+        transform.forward = cam.gameObject.transform.forward;
 	}
 }
