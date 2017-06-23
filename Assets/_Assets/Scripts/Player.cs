@@ -11,15 +11,23 @@ public class Player : MonoBehaviour {
 	
 	[Header("Movement")]
     public float moveSpeed = 1000.0f;
-	
-	[Header("Grabbing")]
+    public float verticalSensitivity = 1.0f;
+    public float horizontalSensitivity = 1.0f;
+
+    [Header("Grabbing")]
 	public float grabRange = 3;
 	public float grabPower = 1;
 	public float throwPower = 2;
-	
+
+    CursorLockMode wantedLockMode = CursorLockMode.None;
+
+    void Start() {
+        wantedLockMode = CursorLockMode.Locked;
+    }
+
 	void Reset () {
 		controller = GetComponent<CharacterController>();
-        cam = GetComponentInChildren<Camera>();
+        cam = GetComponentInChildren<Camera>();        
 	}
 	
 	
@@ -34,8 +42,8 @@ public class Player : MonoBehaviour {
         controller.SimpleMove(right * horizontal * moveSpeed * Time.deltaTime);
 
 
-        transform.Rotate(Vector3.up, Input.GetAxis("Mouse X"));
-        cam.gameObject.transform.Rotate(Vector3.right, -Input.GetAxis("Mouse Y"));        
+        transform.Rotate(Vector3.up, Input.GetAxis("Mouse X") * horizontalSensitivity);
+        cam.gameObject.transform.Rotate(Vector3.right, -Input.GetAxis("Mouse Y") * verticalSensitivity);        
 		
 		if(Input.GetButtonDown("Grab")){
 			if(heldObject==null){
@@ -44,6 +52,12 @@ public class Player : MonoBehaviour {
 				DropHeldObject();
 			}
 		}
+
+        if (Input.GetButtonDown("Cancel")) {
+            wantedLockMode = CursorLockMode.None;
+        }
+
+        Cursor.lockState = wantedLockMode;
 	}
 	
 	
