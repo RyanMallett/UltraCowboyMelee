@@ -10,7 +10,7 @@ public class Player : MonoBehaviour {
 	public Transform hand;
 	
 	[Header("Movement")]
-    public float moveSpeed = 10.0f;
+    public float moveSpeed = 1000.0f;
 	
 	[Header("Grabbing")]
 	public float grabRange = 3;
@@ -33,8 +33,8 @@ public class Player : MonoBehaviour {
         cam.gameObject.transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X"));
         cam.gameObject.transform.Rotate(transform.right * -Input.GetAxis("Mouse Y"));
 		
-		if(Input.GetButtonDown("Jump")){
-			if(heldObject!=null){
+		if(Input.GetButtonDown("Grab")){
+			if(heldObject==null){
 				AttemptGrab();
 			}else{
 				DropHeldObject();
@@ -67,12 +67,15 @@ public class Player : MonoBehaviour {
 			
 			heldObject = closest;
 			heldObject.Grab(this);
-			heldObject.transform.SetParent(hand,false);
+			heldObject.transform.SetParent(hand,true);
+			heldObject.transform.position = hand.position;
+			heldObject.transform.forward = hand.forward;
 		}
 	}
 	
 	void DropHeldObject () {
 		heldObject.Drop(this);
+		heldObject.transform.SetParent(null);
 		heldObject = null;
 	}
    

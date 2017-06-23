@@ -44,7 +44,7 @@ public class PhysicsObject : MonoBehaviour {
 	
 	public void Drop (Player player){
 		rb.isKinematic = false;
-		rb.velocity = player.controller.velocity * player.throwPower;
+		rb.AddForce(player.controller.velocity * player.throwPower, ForceMode.VelocityChange);
 	}
 	
 	public void Highlight (){
