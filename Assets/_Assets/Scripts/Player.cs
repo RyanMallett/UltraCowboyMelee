@@ -21,12 +21,14 @@ public class Player : MonoBehaviour {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 movementVector = new Vector3(horizontal, 0, vertical);
-        controller.SimpleMove(movementVector * moveSpeed * Time.deltaTime);
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+        Vector3 movementDirection = new Vector3(horizontal * forward.x, 0, vertical * forward.z);
+        controller.SimpleMove(forward * vertical * moveSpeed * Time.deltaTime);
+        controller.SimpleMove(right * horizontal * moveSpeed * Time.deltaTime);
 
-        cam.gameObject.transform.RotateAround(transform.position, Vector3.up, Input.GetAxis("Mouse X"));
-        cam.gameObject.transform.Rotate(transform.right * -Input.GetAxis("Mouse Y"));
 
-        transform.forward = cam.gameObject.transform.forward;
+        transform.Rotate(Vector3.up, Input.GetAxis("Mouse X"));
+        cam.gameObject.transform.Rotate(Vector3.right, -Input.GetAxis("Mouse Y"));        
 	}
 }
